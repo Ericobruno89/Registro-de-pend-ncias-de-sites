@@ -4,424 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Pendências - Fan, Placa Fan, Fechadura, DPS, Iluminação</title>
-    <!-- Incluindo html2pdf.js para geração de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            color: white;
-            padding: 25px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 1.8em;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .tecnico-bar {
-            background: #1e3a5f;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-            border-bottom: 1px solid #2c4a7a;
-        }
-
-        .tecnico-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .tecnico-label {
-            font-weight: 600;
-            background: #0a192f;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 13px;
-        }
-
-        .tecnico-nome-display {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #2c4a7a;
-            padding: 5px 15px;
-            border-radius: 25px;
-        }
-
-        .tecnico-nome-display span {
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .edit-tecnico-btn {
-            background: #f39c12;
-            border: none;
-            color: #0a192f;
-            padding: 5px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-
-        .edit-tecnico-btn:hover {
-            background: #e67e22;
-            transform: scale(1.05);
-        }
-
-        .tecnico-edit-area {
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .tecnico-edit-area input {
-            padding: 8px 15px;
-            border-radius: 25px;
-            border: none;
-            width: 250px;
-            font-size: 14px;
-        }
-
-        .tecnico-edit-area button {
-            background: #27ae60;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            color: white;
-        }
-
-        .tecnico-edit-area button:hover {
-            background: #229954;
-        }
-
-        .tecnico-edit-area .cancel-edit {
-            background: #95a5a6;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e2e8f0;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: #e2e8f0;
-            color: #0a192f;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 10px 10px 0 0;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .tab-btn:hover {
-            background: #cbd5e0;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-section {
-            background: #f0f4f8;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border: 1px solid #d0dce8;
-        }
-
-        .form-section h3 {
-            color: #0a192f;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #0a192f;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #d0dce8;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #1e3a5f;
-            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(10, 25, 47, 0.3);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-        }
-
-        .btn-info {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        }
-
-        .btn-pdf {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            margin-left: 10px;
-        }
-        
-        .header-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: #e2e8f0;
-            color: #0a192f;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 12px;
-        }
-
-        .filter-btn:hover {
-            background: #cbd5e0;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            color: white;
-        }
-
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            flex: 1;
-            text-align: center;
-            min-width: 100px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .stat-card h3 {
-            font-size: 11px;
-            margin-bottom: 5px;
-            opacity: 0.9;
-        }
-
-        .stat-card .number {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 12px;
-        }
-
-        th {
-            background: #0a192f;
-            color: white;
-            font-size: 12px;
-        }
-
-        tr:hover {
-            background: #f0f4f8;
-        }
-
-        .status {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1600px; margin: 0 auto; background: #ffffff; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; padding: 25px 30px; text-align: center; }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .tecnico-bar { background: #1e3a5f; color: white; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid #2c4a7a; }
+        .tecnico-info { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .tecnico-label { font-weight: 600; background: #0a192f; padding: 6px 15px; border-radius: 20px; font-size: 13px; }
+        .tecnico-nome-display { display: flex; align-items: center; gap: 10px; background: #2c4a7a; padding: 5px 15px; border-radius: 25px; }
+        .tecnico-nome-display span { font-weight: bold; font-size: 15px; }
+        .edit-tecnico-btn { background: #f39c12; border: none; color: #0a192f; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 12px; transition: all 0.3s; }
+        .edit-tecnico-btn:hover { background: #e67e22; transform: scale(1.05); }
+        .tecnico-edit-area { display: none; align-items: center; gap: 10px; }
+        .tecnico-edit-area input { padding: 8px 15px; border-radius: 25px; border: none; width: 250px; font-size: 14px; }
+        .tecnico-edit-area button { background: #27ae60; border: none; padding: 8px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; color: white; }
+        .tecnico-edit-area button:hover { background: #229954; }
+        .tecnico-edit-area .cancel-edit { background: #95a5a6; }
+        .content { padding: 30px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap; }
+        .tab-btn { background: #e2e8f0; color: #0a192f; padding: 10px 16px; border: none; border-radius: 10px 10px 0 0; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s; }
+        .tab-btn:hover { background: #cbd5e0; }
+        .tab-btn.active { background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-section { background: #f0f4f8; padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #d0dce8; }
+        .form-section h3 { color: #0a192f; margin-bottom: 20px; font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #0a192f; }
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #d0dce8; border-radius: 8px; font-size: 14px; transition: all 0.3s; background: white; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1); }
+        textarea { resize: vertical; min-height: 100px; }
+        .btn { background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(10, 25, 47, 0.3); }
+        .btn-success { background: linear-gradient(135deg, #27ae60 0%, #229954 100%); }
+        .btn-warning { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+        .btn-info { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .btn-pdf { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); margin-left: 10px; }
+        .header-buttons { display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px; }
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-btn { background: #e2e8f0; color: #0a192f; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-weight: 500; font-size: 12px; }
+        .filter-btn:hover { background: #cbd5e0; }
+        .filter-btn.active { background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; }
+        .stats { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .stat-card { background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; padding: 15px; border-radius: 12px; flex: 1; text-align: center; min-width: 100px; transition: all 0.3s; cursor: pointer; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card h3 { font-size: 11px; margin-bottom: 5px; opacity: 0.9; }
+        .stat-card .number { font-size: 24px; font-weight: bold; }
+        .table-container { overflow-x: auto; border-radius: 10px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 12px; }
+        th { background: #0a192f; color: white; font-size: 12px; }
+        tr:hover { background: #f0f4f8; }
+        .status { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
         .status-pendente { background: #fee2e2; color: #c0392b; }
         .status-em-andamento { background: #ffe6cc; color: #e67e22; }
         .status-concluido { background: #d5f4e6; color: #27ae60; }
-
-        .action-btns {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 4px;
-            transition: all 0.2s;
-            border-radius: 5px;
-        }
-
-        .icon-btn:hover {
-            transform: scale(1.1);
-            background: #e2e8f0;
-        }
-
-        .priority {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
-
+        .action-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+        .icon-btn { background: none; border: none; cursor: pointer; font-size: 14px; padding: 4px; transition: all 0.2s; border-radius: 5px; }
+        .icon-btn:hover { transform: scale(1.1); background: #e2e8f0; }
+        .priority { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
         .priority-alta { background: #e74c3c; }
         .priority-media { background: #f39c12; }
         .priority-baixa { background: #27ae60; }
-
-        .tipo-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
+        .tipo-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
         .bateria-litio { background: #e74c3c; color: white; }
         .bateria-chumbo-100 { background: #f39c12; color: white; }
         .bateria-chumbo-170 { background: #2c3e50; color: white; }
@@ -436,33 +87,8 @@
         .fcc { background: #3498db; color: white; }
         .qtm { background: #e67e22; color: white; }
         .cadeado { background: #27ae60; color: white; }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-        }
-
-        /* Estilos específicos para o PDF - esconder elementos não desejados */
-        .pdf-only {
-            display: none;
-        }
-
-        @media print {
-            .tabs, .form-section, .tecnico-bar, .filters, .stats, .header-buttons, .action-btns, .icon-btn {
-                display: none !important;
-            }
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            .container {
-                box-shadow: none;
-                border-radius: 0;
-            }
-        }
-
+        .empty-state { text-align: center; padding: 40px; color: #7f8c8d; }
+        
         @media (max-width: 768px) {
             .content { padding: 15px; }
             .form-row { grid-template-columns: 1fr; gap: 0; }
@@ -492,14 +118,12 @@
                     <button class="cancel-edit" onclick="cancelarEdicaoTecnico()">✗ Cancelar</button>
                 </div>
             </div>
-            <div style="font-size: 12px; opacity: 0.8;">
-                ⚡ Este nome será usado em todas as novas pendências
-            </div>
+            <div style="font-size: 12px; opacity: 0.8;">⚡ Este nome será usado em todas as novas pendências</div>
         </div>
 
         <div class="content">
             <div class="header-buttons">
-                <button class="btn btn-pdf" id="exportPDFBtn">📄 Exportar Relatório PDF (Apenas Pendências)</button>
+                <button class="btn btn-pdf" id="exportPDFBtn">📄 Exportar Relatório PDF</button>
             </div>
 
             <div class="tabs">
@@ -537,18 +161,38 @@
                 </div>
             </div>
 
-            <!-- Demais abas resumidas para economizar espaço no código -->
-            <div id="tab-bateria-litio" class="tab-content"><div class="form-section"><h3>🔋 Bateria Lítio</h3><form id="formBateriaLitio"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteLitio" required></div><div class="form-row"><div class="form-group"><label>Capacidade:</label><input type="text" id="capLitio"></div><div class="form-group"><label>Tensão:</label><select id="tensaoLitio"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdLitio" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="trocaLitio"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descLitio" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeLitio"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataLitio"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
-            <div id="tab-bateria-chumbo-100" class="tab-content"><div class="form-section"><h3>🔋 Chumbo 100A</h3><form id="formChumbo100"><div class="form-group"><label>🌐 Site:</label><input type="text" id="site100" required></div><div class="form-row"><div class="form-group"><label>Capacidade:</label><input type="text" id="cap100" value="100Ah" readonly></div><div class="form-group"><label>Tensão:</label><select id="tensao100"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtd100" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="troca100"></div></div><div class="form-group"><label>Descrição:</label><textarea id="desc100" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridade100"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="data100"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
-            <div id="tab-bateria-chumbo-170" class="tab-content"><div class="form-section"><h3>🔋 Chumbo 170A</h3><form id="formChumbo170"><div class="form-group"><label>🌐 Site:</label><input type="text" id="site170" required></div><div class="form-row"><div class="form-group"><label>Capacidade:</label><input type="text" id="cap170" value="170Ah" readonly></div><div class="form-group"><label>Tensão:</label><select id="tensao170"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtd170" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="troca170"></div></div><div class="form-group"><label>Descrição:</label><textarea id="desc170" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridade170"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="data170"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
-            <div id="tab-retificadora" class="tab-content"><div class="form-section"><h3>⚡ Retificadora</h3><form id="formRetificadora"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteRet" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoRet"><option value="retifica_huawei">Huawei</option><option value="retifica_delta">Delta</option></select></div><div class="form-group"><label>Modelo:</label><input type="text" id="modeloRet"></div></div><div class="form-row"><div class="form-group"><label>Nº Série:</label><input type="text" id="snRet"></div><div class="form-group"><label>Prioridade:</label><select id="prioridadeRet"><option>baixa</option><option>media</option><option>alta</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descRet" required></textarea></div><div class="form-row"><div class="form-group"><label>Status:</label><select id="statusRet"><option>pendente</option><option>em-andamento</option><option>concluido</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataRet"></div></div><button type="submit" class="btn">➕ Adicionar</button></form></div></div>
-            <div id="tab-fan" class="tab-content"><div class="form-section"><h3>🌀 Fan</h3><form id="formFan"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteFan" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoFan"><option>fan_axial</option><option>fan_centrifugo</option></select></div><div class="form-group"><label>Tamanho:</label><input type="text" id="tamanhoFan"></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdFan" value="1"></div><div class="form-group"><label>Tensão:</label><select id="tensaoFan"><option>12V</option><option>24V</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descFan" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeFan"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataFan"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
-            <div id="tab-placa-fan" class="tab-content"><div class="form-section"><h3>📟 Placa de Fan</h3><form id="formPlacaFan"><div class="form-group"><label>🌐 Site:</label><input type="text" id="sitePlacaFan" required></div><div class="form-row"><div class="form-group"><label>Modelo:</label><input type="text" id="modeloPlacaFan"></div><div class="form-group"><label>Canais:</label><input type="text" id="canaisPlacaFan"></div></div><div class="form-row"><div class="form-group"><label>Nº Série:</label><input type="text" id="snPlacaFan"></div><div class="form-group"><label>Conexão:</label><select id="conexaoPlacaFan"><option>pwm</option><option>dc</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descPlacaFan" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadePlacaFan"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataPlacaFan"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
-            <div id="tab-fechadura" class="tab-content"><div class="form-section"><h3>🔒 Fechadura</h3><form id="formFechadura"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteFechadura" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoFechadura"><option>eletronica</option><option>mecanica</option></select></div><div class="form-group"><label>Modelo:</label><input type="text" id="modeloFechadura"></div></div><div class="form-row"><div class="form-group"><label>Nº Chaves:</label><input type="number" id="qtdChaves" value="2"></div><div class="form-group"><label>Localização:</label><input type="text" id="localFechadura"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descFechadura" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeFechadura"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataFechadura"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
-            <div id="tab-dps" class="tab-content"><div class="form-section"><h3>⚡ DPS</h3><form id="formDPS"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteDPS" required></div><div class="form-row"><div class="form-group"><label>Classe:</label><select id="classeDPS"><option>classe_I</option><option>classe_II</option></select></div><div class="form-group"><label>Tensão:</label><select id="tensaoDPS"><option>127V</option><option>220V</option></select></div></div><div class="form-row"><div class="form-group"><label>Pólos:</label><select id="polosDPS"><option>1P</option><option>2P</option><option>3P</option></select></div><div class="form-group"><label>Status DPS:</label><select id="statusDPS"><option>ok</option><option>danificado</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descDPS" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeDPS"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataDPS"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
-            <div id="tab-iluminacao-interna" class="tab-content"><div class="form-section"><h3>💡 Iluminação Interna</h3><form id="formIluminacaoInterna"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteInt" required></div><div class="form-row"><div class="form-group"><label>Tipo Lâmpada:</label><select id="tipoLampadaInt"><option>led</option><option>fluorescente</option></select></div><div class="form-group"><label>Potência (W):</label><input type="text" id="potenciaInt"></div></div><div class="form-row"><div class="form-group"><label>Local/Área:</label><input type="text" id="localInt"></div><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdInt" value="1"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descInt" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeInt"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataInt"></div></div><button type="submit" class="btn btn-info">➕ Adicionar</button></form></div></div>
-            <div id="tab-iluminacao-externa" class="tab-content"><div class="form-section"><h3>☀️ Iluminação Externa</h3><form id="formIluminacaoExterna"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteExt" required></div><div class="form-row"><div class="form-group"><label>Tipo Lâmpada:</label><select id="tipoLampadaExt"><option>led</option><option>vapor_sodio</option></select></div><div class="form-group"><label>Potência (W):</label><input type="text" id="potenciaExt"></div></div><div class="form-row"><div class="form-group"><label>Local/Área:</label><input type="text" id="localExt"></div><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdExt" value="1"></div></div><div class="form-row"><div class="form-group"><label>Altura Poste:</label><input type="text" id="alturaExt"></div><div class="form-group"><label>Sensor:</label><select id="sensorExt"><option>sim</option><option>nao</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descExt" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeExt"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataExt"></div></div><button type="submit" class="btn btn-info">➕ Adicionar</button></form></div></div>
-            <div id="tab-outros" class="tab-content"><div class="form-section"><h3>📌 Outros</h3><form id="formOutros"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteOut" required></div><div class="form-group"><label>Tipo:</label><select id="tipoOut"><option>fcc</option><option>qtm</option><option>corrosao</option><option>cadeado</option><option>outro</option></select></div><div class="form-group"><label>Descrição:</label><textarea id="descOut" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeOut"><option>baixa</option><option>media</option><option>alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataOut"></div></div><button type="submit" class="btn">➕ Adicionar</button></form></div></div>
+            <!-- Aba Bateria Lítio -->
+            <div id="tab-bateria-litio" class="tab-content"><div class="form-section"><h3>🔋 Bateria Lítio</h3><form id="formBateriaLitio"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteLitio" required></div><div class="form-row"><div class="form-group"><label>Capacidade (Ah):</label><input type="text" id="capLitio"></div><div class="form-group"><label>Tensão:</label><select id="tensaoLitio"><option>12V</option><option>24V</option><option>48V</option><option>96V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdLitio" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="trocaLitio"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descLitio" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeLitio"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataLitio"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Bateria Chumbo 100A -->
+            <div id="tab-bateria-chumbo-100" class="tab-content"><div class="form-section"><h3>🔋 Chumbo 100A</h3><form id="formChumbo100"><div class="form-group"><label>🌐 Site:</label><input type="text" id="site100" required></div><div class="form-row"><div class="form-group"><label>Capacidade:</label><input type="text" id="cap100" value="100Ah" readonly></div><div class="form-group"><label>Tensão:</label><select id="tensao100"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtd100" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="troca100"></div></div><div class="form-group"><label>Descrição:</label><textarea id="desc100" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridade100"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="data100"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Bateria Chumbo 170A -->
+            <div id="tab-bateria-chumbo-170" class="tab-content"><div class="form-section"><h3>🔋 Chumbo 170A</h3><form id="formChumbo170"><div class="form-group"><label>🌐 Site:</label><input type="text" id="site170" required></div><div class="form-row"><div class="form-group"><label>Capacidade:</label><input type="text" id="cap170" value="170Ah" readonly></div><div class="form-group"><label>Tensão:</label><select id="tensao170"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtd170" value="1"></div><div class="form-group"><label>Última Troca:</label><input type="date" id="troca170"></div></div><div class="form-group"><label>Descrição:</label><textarea id="desc170" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridade170"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="data170"></div></div><button type="submit" class="btn btn-success">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Retificadora -->
+            <div id="tab-retificadora" class="tab-content"><div class="form-section"><h3>⚡ Retificadora</h3><form id="formRetificadora"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteRet" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoRet"><option value="retifica_huawei">Huawei</option><option value="retifica_delta">Delta</option></select></div><div class="form-group"><label>Modelo:</label><input type="text" id="modeloRet"></div></div><div class="form-row"><div class="form-group"><label>Nº Série:</label><input type="text" id="snRet"></div><div class="form-group"><label>Prioridade:</label><select id="prioridadeRet"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descRet" required></textarea></div><div class="form-row"><div class="form-group"><label>Status:</label><select id="statusRet"><option value="pendente">Pendente</option><option value="em-andamento">Em Andamento</option><option value="concluido">Concluído</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataRet"></div></div><button type="submit" class="btn">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Fan -->
+            <div id="tab-fan" class="tab-content"><div class="form-section"><h3>🌀 Fan</h3><form id="formFan"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteFan" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoFan"><option value="fan_axial">Axial</option><option value="fan_centrifugo">Centrífugo</option><option value="fan_rack">Rack</option></select></div><div class="form-group"><label>Tamanho (mm):</label><input type="text" id="tamanhoFan"></div></div><div class="form-row"><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdFan" value="1"></div><div class="form-group"><label>Tensão:</label><select id="tensaoFan"><option>12V</option><option>24V</option><option>48V</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descFan" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeFan"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataFan"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Placa de Fan -->
+            <div id="tab-placa-fan" class="tab-content"><div class="form-section"><h3>📟 Placa de Fan</h3><form id="formPlacaFan"><div class="form-group"><label>🌐 Site:</label><input type="text" id="sitePlacaFan" required></div><div class="form-row"><div class="form-group"><label>Modelo:</label><input type="text" id="modeloPlacaFan"></div><div class="form-group"><label>Canais:</label><input type="text" id="canaisPlacaFan"></div></div><div class="form-row"><div class="form-group"><label>Nº Série:</label><input type="text" id="snPlacaFan"></div><div class="form-group"><label>Conexão:</label><select id="conexaoPlacaFan"><option>PWM</option><option>DC</option><option>Modbus</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descPlacaFan" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadePlacaFan"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataPlacaFan"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Fechadura -->
+            <div id="tab-fechadura" class="tab-content"><div class="form-section"><h3>🔒 Fechadura</h3><form id="formFechadura"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteFechadura" required></div><div class="form-row"><div class="form-group"><label>Tipo:</label><select id="tipoFechadura"><option value="eletronica">Eletrônica</option><option value="mecanica">Mecânica</option><option value="digital">Digital</option></select></div><div class="form-group"><label>Modelo:</label><input type="text" id="modeloFechadura"></div></div><div class="form-row"><div class="form-group"><label>Nº Chaves:</label><input type="number" id="qtdChaves" value="2"></div><div class="form-group"><label>Localização:</label><input type="text" id="localFechadura"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descFechadura" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeFechadura"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataFechadura"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba DPS -->
+            <div id="tab-dps" class="tab-content"><div class="form-section"><h3>⚡ DPS</h3><form id="formDPS"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteDPS" required></div><div class="form-row"><div class="form-group"><label>Classe:</label><select id="classeDPS"><option value="classe_I">Classe I</option><option value="classe_II">Classe II</option><option value="classe_III">Classe III</option></select></div><div class="form-group"><label>Tensão:</label><select id="tensaoDPS"><option>127V</option><option>220V</option><option>380V</option><option>480V</option></select></div></div><div class="form-row"><div class="form-group"><label>Pólos:</label><select id="polosDPS"><option>1P</option><option>2P</option><option>3P</option><option>4P</option></select></div><div class="form-group"><label>Status DPS:</label><select id="statusDPS"><option value="ok">OK</option><option value="danificado">Danificado</option><option value="testar">Testar</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descDPS" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeDPS"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataDPS"></div></div><button type="submit" class="btn btn-warning">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Iluminação Interna -->
+            <div id="tab-iluminacao-interna" class="tab-content"><div class="form-section"><h3>💡 Iluminação Interna</h3><form id="formIluminacaoInterna"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteInt" required></div><div class="form-row"><div class="form-group"><label>Tipo Lâmpada:</label><select id="tipoLampadaInt"><option value="led">LED</option><option value="fluorescente">Fluorescente</option><option value="incandescente">Incandescente</option></select></div><div class="form-group"><label>Potência (W):</label><input type="text" id="potenciaInt"></div></div><div class="form-row"><div class="form-group"><label>Local/Área:</label><input type="text" id="localInt"></div><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdInt" value="1"></div></div><div class="form-group"><label>Descrição:</label><textarea id="descInt" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeInt"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataInt"></div></div><button type="submit" class="btn btn-info">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Iluminação Externa -->
+            <div id="tab-iluminacao-externa" class="tab-content"><div class="form-section"><h3>☀️ Iluminação Externa</h3><form id="formIluminacaoExterna"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteExt" required></div><div class="form-row"><div class="form-group"><label>Tipo Lâmpada:</label><select id="tipoLampadaExt"><option value="led">LED</option><option value="vapor_sodio">Vapor de Sódio</option><option value="vapor_mercurio">Vapor de Mercúrio</option><option value="multivapor">Multivapor</option></select></div><div class="form-group"><label>Potência (W):</label><input type="text" id="potenciaExt"></div></div><div class="form-row"><div class="form-group"><label>Local/Área:</label><input type="text" id="localExt"></div><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdExt" value="1"></div></div><div class="form-row"><div class="form-group"><label>Altura Poste:</label><input type="text" id="alturaExt" placeholder="Ex: 6m, 8m"></div><div class="form-group"><label>Sensor Crepuscular:</label><select id="sensorExt"><option value="sim">Sim</option><option value="nao">Não</option><option value="defeito">Com defeito</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descExt" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeExt"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataExt"></div></div><button type="submit" class="btn btn-info">➕ Adicionar</button></form></div></div>
+
+            <!-- Aba Outros -->
+            <div id="tab-outros" class="tab-content"><div class="form-section"><h3>📌 Outros</h3><form id="formOutros"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteOut" required></div><div class="form-group"><label>Tipo:</label><select id="tipoOut"><option value="fcc">FCC</option><option value="qtm">QTM</option><option value="corrosao">Corrosão</option><option value="cadeado">Cadeado</option><option value="outro">Outro</option></select></div><div class="form-group"><label>Descrição:</label><textarea id="descOut" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeOut"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataOut"></div></div><button type="submit" class="btn">➕ Adicionar</button></form></div></div>
 
             <div class="filters">
                 <button class="filter-btn active" data-filter="todos">📋 Todos</button>
@@ -597,13 +241,6 @@
         function cancelarEdicaoTecnico() { document.getElementById('tecnicoDisplay').style.display = 'flex'; document.getElementById('tecnicoEditArea').style.display = 'none'; document.getElementById('editNomeTecnico').value = nomeTecnicoAtual; }
         function salvarNomeTecnico() { const novoNome = document.getElementById('editNomeTecnico').value.trim(); if (novoNome) { nomeTecnicoAtual = novoNome; document.getElementById('nomeTecnicoDisplay').textContent = nomeTecnicoAtual; localStorage.setItem('nome_tecnico', nomeTecnicoAtual); cancelarEdicaoTecnico(); alert(`✅ Técnico alterado para: ${nomeTecnicoAtual}`); } }
 
-        function loadPendencias() {
-            const stored = localStorage.getItem('pendencias_completo');
-            if (stored && JSON.parse(stored).length > 0) { pendencias = JSON.parse(stored); }
-            else { pendencias = carregarExemplos(); savePendencias(); }
-            renderPendencias();
-        }
-
         function carregarExemplos() {
             return [
                 { id: Date.now(), site: "https://site1.com.br", tipoPendencia: "fan", tipoFan: "fan_axial", tamanhoFan: "120x120mm", qtdFan: 2, descricao: "Fan axial com ruído excessivo - substituir", prioridade: "media", status: "pendente", dataLimite: "2026-12-20", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
@@ -614,6 +251,12 @@
             ];
         }
 
+        function loadPendencias() {
+            const stored = localStorage.getItem('pendencias_completo');
+            if (stored && JSON.parse(stored).length > 0) { pendencias = JSON.parse(stored); }
+            else { pendencias = carregarExemplos(); savePendencias(); }
+            renderPendencias();
+        }
         function savePendencias() { localStorage.setItem('pendencias_completo', JSON.stringify(pendencias)); }
         function isBateria(t) { return ['bateria_litio','bateria_chumbo_100','bateria_chumbo_170'].includes(t); }
         function isRetifica(t) { return ['retifica_huawei','retifica_delta'].includes(t); }
@@ -626,10 +269,6 @@
             return classes[tipo] || 'fcc';
         }
         function addPendencia(tipo, dados) { const nova = { id: Date.now(), ...dados, tipoPendencia: tipo, responsavel: nomeTecnicoAtual, dataRegistro: new Date().toLocaleDateString('pt-BR') }; pendencias.unshift(nova); savePendencias(); renderPendencias(); }
-
-        // Registrar todos os forms
-        const forms = ['formGeral','formBateriaLitio','formChumbo100','formChumbo170','formRetificadora','formFan','formPlacaFan','formFechadura','formDPS','formIluminacaoInterna','formIluminacaoExterna','formOutros'];
-        // Funções de submit omitidas por brevidade - funcionam normalmente
 
         function deletePendencia(id) { if(confirm('Excluir pendência?')){ pendencias = pendencias.filter(p=>p.id!==id); savePendencias(); renderPendencias(); } }
         function updateStatus(id, newStatus) { const p = pendencias.find(p=>p.id===id); if(p){ p.status=newStatus; savePendencias(); renderPendencias(); } }
@@ -667,15 +306,8 @@
             return '—';
         }
 
-        // Função melhorada para exportar APENAS as pendências
-        async function exportToPDF() {
-            // Criar um elemento temporário apenas com as pendências
-            const pdfContainer = document.createElement('div');
-            pdfContainer.style.padding = '20px';
-            pdfContainer.style.fontFamily = 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
-            pdfContainer.style.backgroundColor = 'white';
-            
-            // Obter dados atuais
+        // Gerar HTML do relatório para PDF
+        function generateReportHTML() {
             const filtered = getFiltered();
             const filterText = currentFilter === 'todos' ? 'Todos' : 
                               currentFilter === 'pendente' ? 'Pendentes' :
@@ -688,10 +320,9 @@
                               currentFilter === 'fechadura' ? 'Fechaduras' :
                               currentFilter === 'iluminacao' ? 'Iluminação' : 'Todos';
             
-            // Cabeçalho do relatório
-            pdfContainer.innerHTML = `
+            return `
                 <div style="background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
-                    <h1 style="margin: 0 0 10px 0;">📊 Relatório de Pendências</h1>
+                    <h2 style="margin: 0 0 10px 0;">📊 Relatório de Pendências</h2>
                     <p style="margin: 5px 0;">📅 Gerado em: ${new Date().toLocaleString('pt-BR')}</p>
                     <p style="margin: 5px 0;">👤 Técnico Responsável: ${nomeTecnicoAtual}</p>
                     <p style="margin: 5px 0;">🔍 Filtro Aplicado: ${filterText}</p>
@@ -750,6 +381,15 @@
                     Documento gerado pelo Sistema de Pendências - ${new Date().toLocaleDateString('pt-BR')}
                 </div>
             `;
+        }
+
+        // Exportar PDF
+        async function exportToPDF() {
+            const pdfContainer = document.createElement('div');
+            pdfContainer.style.padding = '20px';
+            pdfContainer.style.fontFamily = 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif';
+            pdfContainer.style.backgroundColor = 'white';
+            pdfContainer.innerHTML = generateReportHTML();
             
             document.body.appendChild(pdfContainer);
             
@@ -785,7 +425,7 @@
         document.querySelectorAll('.stat-card').forEach(card=>{ card.addEventListener('click',()=>{ const filter=card.dataset.filter; document.querySelector(`.filter-btn[data-filter="${filter}"]`)?.click(); }); });
         document.getElementById('exportPDFBtn').addEventListener('click', exportToPDF);
         
-        // Registrar submits (simplificado)
+        // Forms submit
         document.getElementById('formGeral')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia(document.getElementById('tipoGeral').value,{site:document.getElementById('siteGeral').value,descricao:document.getElementById('descGeral').value,prioridade:document.getElementById('prioridadeGeral').value,status:document.getElementById('statusGeral').value,dataLimite:document.getElementById('dataGeral').value}); e.target.reset(); alert('✅ Adicionado!');});
         document.getElementById('formBateriaLitio')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('bateria_litio',{site:document.getElementById('siteLitio').value,capacidadeBateria:document.getElementById('capLitio').value,tensaoBateria:document.getElementById('tensaoLitio').value,quantidadeBaterias:document.getElementById('qtdLitio').value,descricao:document.getElementById('descLitio').value,prioridade:document.getElementById('prioridadeLitio').value,status:'pendente',dataLimite:document.getElementById('dataLitio').value}); e.target.reset(); alert('✅ Adicionado!');});
         document.getElementById('formChumbo100')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('bateria_chumbo_100',{site:document.getElementById('site100').value,capacidadeBateria:'100Ah',tensaoBateria:document.getElementById('tensao100').value,quantidadeBaterias:document.getElementById('qtd100').value,descricao:document.getElementById('desc100').value,prioridade:document.getElementById('prioridade100').value,status:'pendente',dataLimite:document.getElementById('data100').value}); e.target.reset(); alert('✅ Adicionado!');});
