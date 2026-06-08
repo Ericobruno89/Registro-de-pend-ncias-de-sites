@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pendências - Fan, Placa Fan, Fechadura, DPS, Iluminação</title>
+    <title>Sistema de Pendências - Fan, Placa Fan, Fechadura, DPS, Iluminação, GMG</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,6 +46,7 @@
         .btn-warning { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
         .btn-info { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
         .btn-pdf { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); margin-left: 10px; }
+        .btn-gmg { background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%); }
         .header-buttons { display: flex; justify-content: flex-end; margin-bottom: 20px; gap: 10px; }
         .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .filter-btn { background: #e2e8f0; color: #0a192f; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-weight: 500; font-size: 12px; }
@@ -84,6 +85,7 @@
         .dps { background: #e74c3c; color: white; }
         .iluminacao-interna { background: #f1c40f; color: #2c3e50; }
         .iluminacao-externa { background: #f39c12; color: #2c3e50; }
+        .gmg { background: #8e44ad; color: white; }
         .fcc { background: #3498db; color: white; }
         .qtm { background: #e67e22; color: white; }
         .cadeado { background: #27ae60; color: white; }
@@ -102,7 +104,7 @@
     <div class="container">
         <div class="header">
             <h1>🔧 Sistema de Pendências de Sites</h1>
-            <p>Gestão de Baterias, Retificadores, Fans, Placas, Fechaduras, DPS, Iluminação e muito mais</p>
+            <p>Gestão de Baterias, Retificadores, Fans, Placas, Fechaduras, DPS, Iluminação, GMG e muito mais</p>
         </div>
 
         <div class="tecnico-bar">
@@ -138,6 +140,7 @@
                 <button class="tab-btn" data-tab="tab-dps">⚡ DPS</button>
                 <button class="tab-btn" data-tab="tab-iluminacao-interna">💡 Ilum. Interna</button>
                 <button class="tab-btn" data-tab="tab-iluminacao-externa">☀️ Ilum. Externa</button>
+                <button class="tab-btn" data-tab="tab-gmg">🔄 GMG</button>
                 <button class="tab-btn" data-tab="tab-outros">📌 Outros</button>
             </div>
 
@@ -191,6 +194,50 @@
             <!-- Aba Iluminação Externa -->
             <div id="tab-iluminacao-externa" class="tab-content"><div class="form-section"><h3>☀️ Iluminação Externa</h3><form id="formIluminacaoExterna"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteExt" required></div><div class="form-row"><div class="form-group"><label>Tipo Lâmpada:</label><select id="tipoLampadaExt"><option value="led">LED</option><option value="vapor_sodio">Vapor de Sódio</option><option value="vapor_mercurio">Vapor de Mercúrio</option><option value="multivapor">Multivapor</option></select></div><div class="form-group"><label>Potência (W):</label><input type="text" id="potenciaExt"></div></div><div class="form-row"><div class="form-group"><label>Local/Área:</label><input type="text" id="localExt"></div><div class="form-group"><label>Quantidade:</label><input type="number" id="qtdExt" value="1"></div></div><div class="form-row"><div class="form-group"><label>Altura Poste:</label><input type="text" id="alturaExt" placeholder="Ex: 6m, 8m"></div><div class="form-group"><label>Sensor Crepuscular:</label><select id="sensorExt"><option value="sim">Sim</option><option value="nao">Não</option><option value="defeito">Com defeito</option></select></div></div><div class="form-group"><label>Descrição:</label><textarea id="descExt" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeExt"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataExt"></div></div><button type="submit" class="btn btn-info">➕ Adicionar</button></form></div></div>
 
+            <!-- Aba GMG (Gerador Motor Gerador) -->
+            <div id="tab-gmg" class="tab-content">
+                <div class="form-section">
+                    <h3>🔄 GMG - Gerador Motor Gerador</h3>
+                    <form id="formGMG">
+                        <div class="form-group"><label>🌐 Site:</label><input type="text" id="siteGMG" required></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🏭 Marca/Modelo:</label><input type="text" id="modeloGMG" placeholder="Ex: Cummins, Caterpillar, MWM, Perkins"></div>
+                            <div class="form-group"><label>⚡ Potência (kVA):</label><input type="text" id="potenciaGMG" placeholder="Ex: 150 kVA"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🆔 Nº Série:</label><input type="text" id="snGMG" placeholder="Número de série do gerador"></div>
+                            <div class="form-group"><label>📅 Ano Fabricação:</label><input type="text" id="anoGMG" placeholder="Ex: 2020"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>⏱️ Horímetro (horas):</label><input type="number" id="horimetroGMG" placeholder="Horas de operação"></div>
+                            <div class="form-group"><label>🛢️ Tipo Combustível:</label><select id="combustivelGMG"><option value="diesel">Diesel</option><option value="gasolina">Gasolina</option><option value="gnv">GNV</option><option value="biocombustivel">Biocombustível</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🔧 Tipo de Pendência:</label><select id="tipoPendenciaGMG"><option value="manutencao_preventiva">Manutenção Preventiva</option><option value="manutencao_corretiva">Manutenção Corretiva</option><option value="falha_partida">Falha na Partida</option><option value="vazamento">Vazamento (óleo/combustível)</option><option value="bateria_gmg">Bateria do Gerador</option><option value="alternador">Problemas no Alternador</option><option value="motor_partida">Motor de Partida</option><option value="sistema_arrefecimento">Sistema de Arrefecimento</option><option value="sistema_exaustao">Sistema de Exaustão</option><option value="quadro_comando">Quadro de Comando</option><option value="teste_carga">Teste de Carga</option><option value="troca_oleo">Troca de Óleo</option><option value="filtros">Troca de Filtros</option><option value="outro_gmg">Outro</option></select></div>
+                            <div class="form-group"><label>📊 Condição Atual:</label><select id="condicaoGMG"><option value="operando_normal">Operando Normal</option><option value="operando_com_restricao">Operando com Restrição</option><option value="parado">Parado</option><option value="em_manutencao">Em Manutenção</option><option value="aguardando_peca">Aguardando Peça</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>⏱️ Horas Última Manutenção:</label><input type="number" id="ultimaManutencaoGMG" placeholder="Horímetro na última manutenção"></div>
+                            <div class="form-group"><label>📅 Próxima Troca Óleo (h):</label><input type="number" id="proxTrocaOleoGMG" placeholder="Horas para próxima troca"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>🔧 Peças Necessárias:</label><input type="text" id="pecasGMG" placeholder="Ex: Filtro de óleo, Correias, Bateria"></div>
+                            <div class="form-group"><label>💰 Orçamento (R$):</label><input type="text" id="orcamentoGMG" placeholder="Valor estimado"></div>
+                        </div>
+                        <div class="form-group"><label>📝 Descrição Detalhada:</label><textarea id="descGMG" rows="3" required></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>⚡ Prioridade:</label><select id="prioridadeGMG"><option value="baixa">🟢 Baixa</option><option value="media">🟡 Média</option><option value="alta">🔴 Alta</option></select></div>
+                            <div class="form-group"><label>📅 Data Limite:</label><input type="date" id="dataGMG"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>👨‍🔧 Técnico Responsável GMG:</label><input type="text" id="tecnicoGMG" placeholder="Técnico especializado em geradores"></div>
+                            <div class="form-group"><label>📞 Contato Suporte:</label><input type="text" id="contatoGMG" placeholder="Telefone do suporte técnico"></div>
+                        </div>
+                        <button type="submit" class="btn btn-gmg">➕ Adicionar Pendência GMG</button>
+                    </form>
+                </div>
+            </div>
+
             <!-- Aba Outros -->
             <div id="tab-outros" class="tab-content"><div class="form-section"><h3>📌 Outros</h3><form id="formOutros"><div class="form-group"><label>🌐 Site:</label><input type="text" id="siteOut" required></div><div class="form-group"><label>Tipo:</label><select id="tipoOut"><option value="fcc">FCC</option><option value="qtm">QTM</option><option value="corrosao">Corrosão</option><option value="cadeado">Cadeado</option><option value="outro">Outro</option></select></div><div class="form-group"><label>Descrição:</label><textarea id="descOut" required></textarea></div><div class="form-row"><div class="form-group"><label>Prioridade:</label><select id="prioridadeOut"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div><div class="form-group"><label>Data Limite:</label><input type="date" id="dataOut"></div></div><button type="submit" class="btn">➕ Adicionar</button></form></div></div>
 
@@ -205,6 +252,7 @@
                 <button class="filter-btn" data-filter="dps">⚡ DPS</button>
                 <button class="filter-btn" data-filter="fechadura">🔒 Fechaduras</button>
                 <button class="filter-btn" data-filter="iluminacao">💡 Iluminação</button>
+                <button class="filter-btn" data-filter="gmg">🔄 GMG</button>
             </div>
 
             <div class="stats">
@@ -214,7 +262,7 @@
                 <div class="stat-card" data-filter="concluido"><h3>✅ Concluídos</h3><div class="number" id="concluidoCount">0</div></div>
                 <div class="stat-card" data-filter="fan"><h3>🌀 Fans</h3><div class="number" id="fanCount">0</div></div>
                 <div class="stat-card" data-filter="dps"><h3>⚡ DPS</h3><div class="number" id="dpsCount">0</div></div>
-                <div class="stat-card" data-filter="iluminacao"><h3>💡 Iluminação</h3><div class="number" id="iluminacaoCount">0</div></div>
+                <div class="stat-card" data-filter="gmg"><h3>🔄 GMG</h3><div class="number" id="gmgCount">0</div></div>
             </div>
 
             <div class="table-container" id="tabela-pendencias">
@@ -245,9 +293,9 @@
             return [
                 { id: Date.now(), site: "https://site1.com.br", tipoPendencia: "fan", tipoFan: "fan_axial", tamanhoFan: "120x120mm", qtdFan: 2, descricao: "Fan axial com ruído excessivo - substituir", prioridade: "media", status: "pendente", dataLimite: "2026-12-20", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
                 { id: Date.now()+1, site: "https://site2.com.br", tipoPendencia: "iluminacao_interna", tipoLampadaInt: "led", potenciaInt: "18W", localInt: "Sala de equipamentos", qtdInt: 4, descricao: "Lâmpadas queimadas e flicker", prioridade: "media", status: "pendente", dataLimite: "2026-12-18", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
-                { id: Date.now()+2, site: "https://site3.com.br", tipoPendencia: "iluminacao_externa", tipoLampadaExt: "vapor_sodio", potenciaExt: "150W", localExt: "Poste entrada principal", qtdExt: 2, alturaExt: "8m", sensorExt: "defeito", descricao: "Postes apagados, sensor crepuscular com defeito", prioridade: "alta", status: "pendente", dataLimite: "2026-12-15", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
+                { id: Date.now()+2, site: "https://site3.com.br", tipoPendencia: "gmg", modeloGMG: "Cummins C150D5", potenciaGMG: "150kVA", snGMG: "CUM-2021-4589", horimetroGMG: 3250, combustivelGMG: "diesel", tipoPendenciaGMG: "manutencao_preventiva", condicaoGMG: "operando_com_restricao", descricao: "GMG apresentando falha na partida e ruído anormal no motor", prioridade: "alta", status: "pendente", dataLimite: "2026-12-10", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
                 { id: Date.now()+3, site: "https://site4.com.br", tipoPendencia: "dps", classeDPS: "classe_II", tensaoDPS: "220V", polosDPS: "2P", statusDPS: "danificado", descricao: "DPS queimado após descarga atmosférica", prioridade: "alta", status: "pendente", dataLimite: "2026-12-10", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') },
-                { id: Date.now()+4, site: "https://site5.com.br", tipoPendencia: "fechadura", tipoFechadura: "eletronica", modeloFechadura: "Sierra BL600", qtdChaves: 3, localFechadura: "Bastidor Principal", descricao: "Fechadura eletrônica com falha na leitura", prioridade: "alta", status: "em-andamento", dataLimite: "2026-12-22", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') }
+                { id: Date.now()+4, site: "https://site5.com.br", tipoPendencia: "gmg", modeloGMG: "MWM TCG 137", potenciaGMG: "200kVA", snGMG: "MWM-2019-7823", horimetroGMG: 5870, combustivelGMG: "diesel", tipoPendenciaGMG: "vazamento", condicaoGMG: "parado", descricao: "Vazamento de óleo no turbo e superaquecimento", prioridade: "alta", status: "em-andamento", dataLimite: "2026-12-22", responsavel: "Carlos Silva", dataRegistro: new Date().toLocaleDateString('pt-BR') }
             ];
         }
 
@@ -261,11 +309,11 @@
         function isBateria(t) { return ['bateria_litio','bateria_chumbo_100','bateria_chumbo_170'].includes(t); }
         function isRetifica(t) { return ['retifica_huawei','retifica_delta'].includes(t); }
         function getTipoNome(tipo) {
-            const nomes = { 'bateria_litio':'Bateria Lítio','bateria_chumbo_100':'Chumbo 100A','bateria_chumbo_170':'Chumbo 170A','retifica_huawei':'Retifica Huawei','retifica_delta':'Retifica Delta','fan':'Fan','placa_fan':'Placa de Fan','fechadura':'Fechadura','dps':'DPS','iluminacao_interna':'Ilum. Interna','iluminacao_externa':'Ilum. Externa','fcc':'FCC','qtm':'QTM','corrosao':'Corrosão','cadeado':'Cadeado','outro':'Outro' };
+            const nomes = { 'bateria_litio':'Bateria Lítio','bateria_chumbo_100':'Chumbo 100A','bateria_chumbo_170':'Chumbo 170A','retifica_huawei':'Retifica Huawei','retifica_delta':'Retifica Delta','fan':'Fan','placa_fan':'Placa de Fan','fechadura':'Fechadura','dps':'DPS','iluminacao_interna':'Ilum. Interna','iluminacao_externa':'Ilum. Externa','gmg':'GMG','fcc':'FCC','qtm':'QTM','corrosao':'Corrosão','cadeado':'Cadeado','outro':'Outro' };
             return nomes[tipo] || tipo;
         }
         function getTipoClasse(tipo) {
-            const classes = { 'bateria_litio':'bateria-litio','bateria_chumbo_100':'bateria-chumbo-100','bateria_chumbo_170':'bateria-chumbo-170','retifica_huawei':'retifica-huawei','retifica_delta':'retifica-delta','fan':'fan','placa_fan':'placa-fan','fechadura':'fechadura','dps':'dps','iluminacao_interna':'iluminacao-interna','iluminacao_externa':'iluminacao-externa','fcc':'fcc','qtm':'qtm','cadeado':'cadeado' };
+            const classes = { 'bateria_litio':'bateria-litio','bateria_chumbo_100':'bateria-chumbo-100','bateria_chumbo_170':'bateria-chumbo-170','retifica_huawei':'retifica-huawei','retifica_delta':'retifica-delta','fan':'fan','placa_fan':'placa-fan','fechadura':'fechadura','dps':'dps','iluminacao_interna':'iluminacao-interna','iluminacao_externa':'iluminacao-externa','gmg':'gmg','fcc':'fcc','qtm':'qtm','cadeado':'cadeado' };
             return classes[tipo] || 'fcc';
         }
         function addPendencia(tipo, dados) { const nova = { id: Date.now(), ...dados, tipoPendencia: tipo, responsavel: nomeTecnicoAtual, dataRegistro: new Date().toLocaleDateString('pt-BR') }; pendencias.unshift(nova); savePendencias(); renderPendencias(); }
@@ -281,6 +329,7 @@
             if(currentFilter==='dps') return pendencias.filter(p=>p.tipoPendencia==='dps');
             if(currentFilter==='fechadura') return pendencias.filter(p=>p.tipoPendencia==='fechadura');
             if(currentFilter==='iluminacao') return pendencias.filter(p=>p.tipoPendencia==='iluminacao_interna'||p.tipoPendencia==='iluminacao_externa');
+            if(currentFilter==='gmg') return pendencias.filter(p=>p.tipoPendencia==='gmg');
             return pendencias.filter(p=>p.status===currentFilter);
         }
 
@@ -291,7 +340,7 @@
             document.getElementById('concluidoCount').textContent = pendencias.filter(p=>p.status==='concluido').length;
             document.getElementById('fanCount').textContent = pendencias.filter(p=>p.tipoPendencia==='fan'||p.tipoPendencia==='placa_fan').length;
             document.getElementById('dpsCount').textContent = pendencias.filter(p=>p.tipoPendencia==='dps').length;
-            document.getElementById('iluminacaoCount').textContent = pendencias.filter(p=>p.tipoPendencia==='iluminacao_interna'||p.tipoPendencia==='iluminacao_externa').length;
+            document.getElementById('gmgCount').textContent = pendencias.filter(p=>p.tipoPendencia==='gmg').length;
         }
 
         function getDetalhes(p) {
@@ -303,10 +352,10 @@
             if(p.tipoPendencia==='dps') return `${p.classeDPS||'N/A'} · ${p.tensaoDPS||'N/A'} · ${p.polosDPS||'N/A'}`;
             if(p.tipoPendencia==='iluminacao_interna') return `${p.tipoLampadaInt||'N/A'} ${p.potenciaInt||''} · ${p.localInt||''} · ${p.qtdInt||1}x`;
             if(p.tipoPendencia==='iluminacao_externa') return `${p.tipoLampadaExt||'N/A'} ${p.potenciaExt||''} · ${p.localExt||''} · ${p.qtdExt||1}x ${p.alturaExt?'· '+p.alturaExt:''}`;
+            if(p.tipoPendencia==='gmg') return `${p.modeloGMG||'N/A'} · ${p.potenciaGMG||'N/A'} · ${p.horimetroGMG||0}h`;
             return '—';
         }
 
-        // Gerar HTML do relatório para PDF
         function generateReportHTML() {
             const filtered = getFiltered();
             const filterText = currentFilter === 'todos' ? 'Todos' : 
@@ -318,7 +367,8 @@
                               currentFilter === 'fan' ? 'Fans' :
                               currentFilter === 'dps' ? 'DPS' :
                               currentFilter === 'fechadura' ? 'Fechaduras' :
-                              currentFilter === 'iluminacao' ? 'Iluminação' : 'Todos';
+                              currentFilter === 'iluminacao' ? 'Iluminação' :
+                              currentFilter === 'gmg' ? 'GMG' : 'Todos';
             
             return `
                 <div style="background: linear-gradient(135deg, #0a192f 0%, #1e3a5f 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
@@ -383,7 +433,6 @@
             `;
         }
 
-        // Exportar PDF
         async function exportToPDF() {
             const pdfContainer = document.createElement('div');
             pdfContainer.style.padding = '20px';
@@ -437,6 +486,7 @@
         document.getElementById('formDPS')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('dps',{site:document.getElementById('siteDPS').value,classeDPS:document.getElementById('classeDPS').value,tensaoDPS:document.getElementById('tensaoDPS').value,polosDPS:document.getElementById('polosDPS').value,statusDPS:document.getElementById('statusDPS').value,descricao:document.getElementById('descDPS').value,prioridade:document.getElementById('prioridadeDPS').value,status:'pendente',dataLimite:document.getElementById('dataDPS').value}); e.target.reset(); alert('✅ Adicionado!');});
         document.getElementById('formIluminacaoInterna')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('iluminacao_interna',{site:document.getElementById('siteInt').value,tipoLampadaInt:document.getElementById('tipoLampadaInt').value,potenciaInt:document.getElementById('potenciaInt').value,localInt:document.getElementById('localInt').value,qtdInt:document.getElementById('qtdInt').value,descricao:document.getElementById('descInt').value,prioridade:document.getElementById('prioridadeInt').value,status:'pendente',dataLimite:document.getElementById('dataInt').value}); e.target.reset(); alert('✅ Iluminação Interna adicionada!');});
         document.getElementById('formIluminacaoExterna')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('iluminacao_externa',{site:document.getElementById('siteExt').value,tipoLampadaExt:document.getElementById('tipoLampadaExt').value,potenciaExt:document.getElementById('potenciaExt').value,localExt:document.getElementById('localExt').value,qtdExt:document.getElementById('qtdExt').value,alturaExt:document.getElementById('alturaExt').value,sensorExt:document.getElementById('sensorExt').value,descricao:document.getElementById('descExt').value,prioridade:document.getElementById('prioridadeExt').value,status:'pendente',dataLimite:document.getElementById('dataExt').value}); e.target.reset(); alert('✅ Iluminação Externa adicionada!');});
+        document.getElementById('formGMG')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia('gmg',{site:document.getElementById('siteGMG').value,modeloGMG:document.getElementById('modeloGMG').value,potenciaGMG:document.getElementById('potenciaGMG').value,snGMG:document.getElementById('snGMG').value,anoGMG:document.getElementById('anoGMG').value,horimetroGMG:document.getElementById('horimetroGMG').value,combustivelGMG:document.getElementById('combustivelGMG').value,tipoPendenciaGMG:document.getElementById('tipoPendenciaGMG').value,condicaoGMG:document.getElementById('condicaoGMG').value,ultimaManutencaoGMG:document.getElementById('ultimaManutencaoGMG').value,proxTrocaOleoGMG:document.getElementById('proxTrocaOleoGMG').value,pecasGMG:document.getElementById('pecasGMG').value,orcamentoGMG:document.getElementById('orcamentoGMG').value,descricao:document.getElementById('descGMG').value,prioridade:document.getElementById('prioridadeGMG').value,status:'pendente',dataLimite:document.getElementById('dataGMG').value,tecnicoGMG:document.getElementById('tecnicoGMG').value,contatoGMG:document.getElementById('contatoGMG').value}); e.target.reset(); alert('✅ Pendência de GMG adicionada!');});
         document.getElementById('formOutros')?.addEventListener('submit',(e)=>{e.preventDefault(); addPendencia(document.getElementById('tipoOut').value,{site:document.getElementById('siteOut').value,descricao:document.getElementById('descOut').value,prioridade:document.getElementById('prioridadeOut').value,status:'pendente',dataLimite:document.getElementById('dataOut').value}); e.target.reset(); alert('✅ Adicionado!');});
 
         loadNomeTecnico();
